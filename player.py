@@ -1,9 +1,12 @@
 import pygame
 from settings import *
+from support import*
 
 class Player(pygame.sprite.Sprite):
     def __init__(self,pos,group):
         super().__init__(group)
+        
+        self.import_assests()
         
         #General setup
         self.image = pygame.Surface((32,64))
@@ -36,9 +39,26 @@ class Player(pygame.sprite.Sprite):
         #print(self.direction)
     
     def move(self, dt):
-        self.pos += self.direction * self.speed * dt
-        self.rect.center = self.pos
+        if self.direction.magnitude() > 0:
+            self.direction = self.direction.normalize()
+        #print(self.direction)
+        self.pos.x += self.direction.x * self.speed * dt
+        self.rect.centerx = self.pos.x
+        #vertical movement
+        self.pos.y += self.direction.y * self.speed * dt
+        self.rect.center = self.pos.y
         
+    def import_assest(self):
+        self.animations = {'up':[],'down':[],'left':[],'right':[],
+                           'right_idle':[],'left_idle':[],'up_idle':[],'down_idle':[],
+                           'right_hoe':[],'left_hoe':[],'up_hoe':[],'down_hoe':[],
+                           'right_axe':[],'left_axe':[],'up_axe':[],'down_axe':[],
+                           'right_water':[],'left_water':[],'up_water':[],'down_water':[]}
+        
+        for animation in self.animations.keys():
+            full_path = '../graphics/character/' + animation
+            self.animations[animation]=import_folder(full_path)
+    
     
     def update(self,dt):
         self.input()
