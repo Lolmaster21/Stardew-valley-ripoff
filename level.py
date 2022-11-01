@@ -17,7 +17,8 @@ class Level:
         
     
     def run(self, dt):
-        print("run game")
+        #print("run game")
         self.display_surface.fill('black')
         self.all_sprites.draw(self.display_surface)
-        self.all_sprites.update()
+        self.all_sprites.update(dt)
+
