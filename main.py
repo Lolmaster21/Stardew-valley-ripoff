@@ -6,7 +6,6 @@ from level import Level
 
 
 class Game:
-    
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
@@ -27,6 +26,6 @@ class Game:
             
 
 #---------- main(starting point of program)-------------------------------------
-if __name__=='__main__':
+if __name__ =='__main__':
     game = Game()
     game.run()
