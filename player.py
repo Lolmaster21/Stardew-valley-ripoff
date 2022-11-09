@@ -7,10 +7,11 @@ class Player(pygame.sprite.Sprite):
         super().__init__(group)
         
         self.import_assets()
+        self.status = 'down_idle'
+        self.frame_index = 0
         
         #General setup
-        self.image = pygame.Surface((32,64))
-        self.image.fill('green')
+        self.image = self.animations[self.status][self.frame_index]
         self.rect = self.image.get_rect(center = pos)
         
         #movement attributes
@@ -29,6 +30,7 @@ class Player(pygame.sprite.Sprite):
         for animation in self.animations.keys():
             full_path = '../graphics/character/' + animation
             self.animations[animation]=import_folder(full_path)
+        print(self.animations)
     
     
     
@@ -37,15 +39,19 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_UP] and keys[pygame.K_RIGHT]:
             self.direction.y = -1
             self.direction.x = 1
+
         if keys[pygame.K_UP] and keys[pygame.K_LEFT]:
             self.direction.y = -1
             self.direction.x = -1
+
         if keys[pygame.K_DOWN] and keys[pygame.K_RIGHT]:
             self.direction.y = 1
             self.direction.x = 1
+
         if keys[pygame.K_DOWN] and keys[pygame.K_LEFT]:
             self.direction.y = 1
             self.direction.x = -1
+
         elif keys[pygame.K_UP]:
             self.direction.y = -1
         
