@@ -26,11 +26,6 @@ class Player(pygame.sprite.Sprite):
                            'right_hoe':[],'left_hoe':[],'up_hoe':[],'down_hoe':[],
                            'right_axe':[],'left_axe':[],'up_axe':[],'down_axe':[],
                            'right_water':[],'left_water':[],'up_water':[],'down_water':[]}
-    def animate(self,dt):
-        self.frame_index += 4*dt
-        if self.frame_index >=(self.animations[self.status]):
-            self.frame_index = 0 
-        self.image = self.animations[self.status][int(self.frame_index)]
         
         for animation in self.animations.keys():
             full_path = '../graphics/character/' + animation
@@ -44,27 +39,23 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_UP] and keys[pygame.K_RIGHT]:
             self.direction.y = -1
             self.direction.x = 1
-            self.status = "up"
 
         if keys[pygame.K_UP] and keys[pygame.K_LEFT]:
             self.direction.y = -1
             self.direction.x = -1
-            self.status = "up"
 
         if keys[pygame.K_DOWN] and keys[pygame.K_RIGHT]:
             self.direction.y = 1
             self.direction.x = 1
-            self.status = "down"
 
         if keys[pygame.K_DOWN] and keys[pygame.K_LEFT]:
             self.direction.y = 1
             self.direction.x = -1
-            self.status = "down"
 
         elif keys[pygame.K_UP]:
             self.direction.y = -1
             self.status = "up"
-
+        
         elif keys[pygame.K_DOWN]:
             self.direction.y = 1
             self.status = "down"
@@ -73,7 +64,6 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = 1
             self.status = "right"
 
-        
         elif keys[pygame.K_LEFT]:
             self.direction.x = -1
             self.status = "left"
@@ -83,7 +73,10 @@ class Player(pygame.sprite.Sprite):
             self.direction.y = 0
        
         #print(self.direction)
-    
+    def get_status(self):
+        if self.direction.magnitude() ==0:
+            self.status += self.status.split("_")[0]+ "_idle"
+
     def move(self, dt):
         if self.direction.magnitude() > 0:
             self.direction = self.direction.normalize()
@@ -93,14 +86,15 @@ class Player(pygame.sprite.Sprite):
         #vertical movement
         self.pos.y += self.direction.y * self.speed * dt
         self.rect.centery = self.pos.y
+    def animate(self,dt):
+       self.frame_index += 4*dt
+       if self.frame_index >= len(self.animations[self.status]):
+           self.frame_index = 0 
+           self.image = self.animations[self.status][int(self.frame_index)]
 
-    def get_status(self):
-        if self.direction.magnitude() ==0:
-            self.status = self.status.split("_")[0]+ "idle"
-
-
+    
     def update(self,dt):
         self.input()
-        self.move(dt)
         self.get_status()
+        self.move(dt)
         self.animate(dt)
