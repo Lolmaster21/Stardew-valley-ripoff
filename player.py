@@ -1,4 +1,5 @@
 import pygame
+from timer import *
 from settings import *
 from support import*
 
@@ -8,6 +9,7 @@ class Player(pygame.sprite.Sprite):
         
         self.import_assets()
         self.status = 'down_idle'
+        self.selected_tool = "axe"
         self.frame_index = 0
         
         #General setup
@@ -18,6 +20,16 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2()
         self.pos = pygame.math.Vector2(self.rect.center)
         self.speed = 200
+        
+        self.timers = {
+            "tool use": Timer(350, self.use_tool)    
+        }
+
+        self.selected_tool = "axe"
+
+    def use_tool(self):
+        print(self.selected_tool)
+
     
         
     def import_assets(self):
@@ -75,7 +87,10 @@ class Player(pygame.sprite.Sprite):
         #print(self.direction)
     def get_status(self):
         if self.direction.magnitude() == 0:
-            self.status = self.status.split("_")[0]+ "_idle"
+            self.status = self.status.split("_")[0] + "_idle"
+
+            if self.timers['tool use']. activate:
+                print("tool is being used")
 
     def move(self, dt):
         if self.direction.magnitude() > 0:
