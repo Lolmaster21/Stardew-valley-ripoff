@@ -48,41 +48,46 @@ class Player(pygame.sprite.Sprite):
     
     def input(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_UP] and keys[pygame.K_RIGHT]:
-            self.direction.y = -1
-            self.direction.x = 1
+        if not self.timers['tool use']. active:
+            if keys[pygame.K_UP] and keys[pygame.K_RIGHT]:
+                self.direction.y = -1
+                self.direction.x = 1
 
-        if keys[pygame.K_UP] and keys[pygame.K_LEFT]:
-            self.direction.y = -1
-            self.direction.x = -1
+            if keys[pygame.K_UP] and keys[pygame.K_LEFT]:
+                self.direction.y = -1
+                self.direction.x = -1
 
-        if keys[pygame.K_DOWN] and keys[pygame.K_RIGHT]:
-            self.direction.y = 1
-            self.direction.x = 1
+            if keys[pygame.K_DOWN] and keys[pygame.K_RIGHT]:
+                self.direction.y = 1
+                self.direction.x = 1
 
-        if keys[pygame.K_DOWN] and keys[pygame.K_LEFT]:
-            self.direction.y = 1
-            self.direction.x = -1
+            if keys[pygame.K_DOWN] and keys[pygame.K_LEFT]:
+                self.direction.y = 1
+                self.direction.x = -1
 
-        elif keys[pygame.K_UP]:
-            self.direction.y = -1
-            self.status = "up"
+            if keys[pygame.K_SPACE]:
+                self.timers['tool use'].activate()
+                self.direction = pygame.math.Vector2()
+
+            elif keys[pygame.K_UP]:
+                self.direction.y = -1
+                self.status = "up"
         
-        elif keys[pygame.K_DOWN]:
-            self.direction.y = 1
-            self.status = "down"
+            elif keys[pygame.K_DOWN]:
+                self.direction.y = 1
+                self.status = "down"
         
-        elif keys[pygame.K_RIGHT]:
-            self.direction.x = 1
-            self.status = "right"
+            elif keys[pygame.K_RIGHT]:
+                self.direction.x = 1
+                self.status = "right"
 
-        elif keys[pygame.K_LEFT]:
-            self.direction.x = -1
-            self.status = "left"
+            elif keys[pygame.K_LEFT]:
+                self.direction.x = -1
+                self.status = "left"
 
-        else:
-            self.direction.x = 0
-            self.direction.y = 0
+            else:
+                self.direction.x = 0
+                self.direction.y = 0
        
         #print(self.direction)
     def get_status(self):
@@ -91,6 +96,7 @@ class Player(pygame.sprite.Sprite):
 
             if self.timers['tool use']. activate:
                 print("tool is being used")
+                self.status = self.status.split("_")[0] + "_" + self.selected_tool
 
     def move(self, dt):
         if self.direction.magnitude() > 0:
