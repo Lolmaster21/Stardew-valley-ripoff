@@ -9,7 +9,7 @@ class Player(pygame.sprite.Sprite):
         
         self.import_assets()
         self.status = 'down_idle'
-        self.selected_tool = "axe"
+        self.selected_tool = "water"
         self.frame_index = 0
         
         #General setup
@@ -68,6 +68,7 @@ class Player(pygame.sprite.Sprite):
             if keys[pygame.K_SPACE]:
                 self.timers['tool use'].activate()
                 self.direction = pygame.math.Vector2()
+                self.frame_index = 0
 
             elif keys[pygame.K_UP]:
                 self.direction.y = -1
@@ -98,6 +99,10 @@ class Player(pygame.sprite.Sprite):
                 print("tool is being used")
                 self.status = self.status.split("_")[0] + "_" + self.selected_tool
 
+    def update_timers(self):
+        for timer in self.timers.values():
+            timer.update
+
     def move(self, dt):
         if self.direction.magnitude() > 0:
             self.direction = self.direction.normalize()
@@ -117,5 +122,6 @@ class Player(pygame.sprite.Sprite):
     def update(self,dt):
         self.input()
         self.get_status()
+        self.update_timers()
         self.move(dt)
         self.animate(dt)
