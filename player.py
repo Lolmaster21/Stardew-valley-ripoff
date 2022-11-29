@@ -25,7 +25,7 @@ class Player(pygame.sprite.Sprite):
             "tool use": Timer(350, self.use_tool)    
         }
 
-        self.selected_tool = "axe"
+        self.selected_tool = "water"
 
     def use_tool(self):
         print(self.selected_tool)
